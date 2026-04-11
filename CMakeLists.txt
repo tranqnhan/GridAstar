@@ -33,9 +33,10 @@ target_include_directories(GRIDASTAR PUBLIC include)
 
 target_link_libraries(GRIDASTAR raylib)
 
-target_compile_options(GRIDASTAR PRIVATE -O3)
+target_compile_options(GRIDASTAR PRIVATE -g)
 
 target_sources(GRIDASTAR PRIVATE
+    source/algorithm/GridHeap.cpp
     source/algorithm/GridEnvironment.cpp
     source/algorithm/Pathfinding.cpp
     source/ui/GridUI.cpp
