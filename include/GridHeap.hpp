@@ -14,11 +14,10 @@ struct GridHeapItem {
 
 class GridHeap {
 public:
-    GridHeap(int maxNumberOfItems);
+    void Set(int maxNumberOfItems);
     bool Push(int id, float value);
     int Pop();
-    int Size() const;
-    void Clear();
+    int Size() const;    
 
 private:
     std::vector<GridHeapItem> heapItems;

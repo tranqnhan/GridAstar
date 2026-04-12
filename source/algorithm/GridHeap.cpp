@@ -2,9 +2,19 @@
 #include <algorithm>
 
 
-GridHeap::GridHeap(int maxNumberOfItems) : maxNumberOfItems(maxNumberOfItems) {
-    this->heapItems.reserve(maxNumberOfItems);
-    this->heapIdMap.resize(maxNumberOfItems, maxNumberOfItems);
+void GridHeap::Set(int maxNumberOfItems) {
+    if (this->maxNumberOfItems != maxNumberOfItems) {
+        this->maxNumberOfItems = maxNumberOfItems;
+        
+        this->heapItems.clear();
+        this->heapIdMap.clear();
+
+        this->heapItems.reserve(maxNumberOfItems);
+        this->heapIdMap.resize(maxNumberOfItems, maxNumberOfItems);
+    } else {
+        std::fill(this->heapIdMap.begin(), this->heapIdMap.end(), this->maxNumberOfItems);
+        this->heapItems.clear();
+    }
 }
 
 
@@ -45,12 +55,6 @@ int GridHeap::Pop() {
 
 int GridHeap::Size() const {
     return this->heapItems.size();
-}
-
-
-void GridHeap::Clear() {
-    std::fill(this->heapIdMap.begin(), this->heapIdMap.end(), this->maxNumberOfItems);
-    this->heapItems.clear();
 }
 
 

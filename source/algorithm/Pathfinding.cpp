@@ -7,34 +7,8 @@
 #include "Waypoint2D.hpp"
 #include "Pathfinding.hpp"
 
-float Pathfinding::EstimateDistance(const Waypoint2D& a, const Waypoint2D& b) const {
-    const int dx = std::abs(a.x - b.x);
-    const int dy = std::abs(a.y - b.y);
-
-    if (dx < dy) {
-        return 1.4142f * dx + dy;
-    } else {
-        return 1.4142f * dy + dx;
-    }
-}
-
-
-float Pathfinding::NextLinearDistance(int currentLinearCoordinate, int nextLinearCoordinate, int width) const {
-    const int diff = std::abs(currentLinearCoordinate - nextLinearCoordinate);
-    float result;
-
-    if (diff == 1 || diff == width) {
-        result = 1.0f;
-    } else {
-        result = 1.4142f;
-    }
-    
-    return result;
-}
-
-
 std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environment, const Waypoint2D& start, const Waypoint2D& end) {
-    GridHeap frontier(environment.GetSize());
+    this->frontier.Set(environment.GetSize());
 
     std::vector<int> parentLinearCoordinates(environment.GetSize(), -1);
     std::vector<float> cost(environment.GetSize(), -1);
@@ -64,8 +38,15 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
         for (const int nextLinearCoordinate : environment.GetNextLinear(currentLinearCoordinate)) {
             if (!explored[nextLinearCoordinate]) {
                 const Waypoint2D& nextWaypoint = environment.LinearToWaypoint(nextLinearCoordinate);
-                const float currentCost = cost[currentLinearCoordinate] + this->NextLinearDistance(currentLinearCoordinate, nextLinearCoordinate, environment.GetWidth());
-                const float estimateCost = this->EstimateDistance(nextWaypoint, end);
+                
+                const int diff = std::abs(currentLinearCoordinate - nextLinearCoordinate);
+                const float dCost = (diff == 1 || diff == environment.GetWidth()) ? 1.0f : 1.4142f;
+                const float currentCost = cost[currentLinearCoordinate] + dCost;
+
+                const int dxEnd = std::abs(nextWaypoint.x - end.x);
+                const int dyEnd = std::abs(nextWaypoint.y - end.y);
+                const float estimateCost = (dxEnd < dyEnd) ? (1.4142f * dxEnd + dyEnd) : (1.4142f * dyEnd + dxEnd);
+                
                 const float totalCost = currentCost + estimateCost;
 
                 if (frontier.Push(nextLinearCoordinate, totalCost)) {
