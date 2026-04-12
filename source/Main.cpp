@@ -53,43 +53,8 @@ void Render() {
 }
 
 
-void GridHeapTest() {
-    GridHeap heap(100);
-
-    heap.Push(2, 2);
-    heap.Push(5, 5);
-    heap.Push(3, 3);
-    heap.Push(4, 4);
-    heap.Push(1, 1);
-
-    heap.Push(4, 2);
-
-    heap.Pop();
-
-    heap.Push(0, 0);
-
-    heap.Push(4, -1);
-
-    const int heapSize = heap.Size();
-    for (int i = 0; i < heapSize; ++i) {
-        std::printf("%i ", heap.Pop());
-        std::fflush(stdout);
-    }
-    std::printf("\n");
-
-    // 4 0 2 3 5
-}
-
-
-void Test() {
-    GridHeapTest();
-}
-
-
 // Main loop
-int main(void) {
-    // Test();
-    
+int main(void) {    
     Init();
     
 

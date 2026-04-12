@@ -62,18 +62,8 @@ const std::vector<int> GridEnvironment::GetNextLinear(int centerLinearCoordinate
 }
 
 
-void GridEnvironment::SetObstacle(const Waypoint2D& waypoint) {
-    this->obstacles[this->WaypointToLinear(waypoint)] = true;
-}
-
-
 void GridEnvironment::SetObstacle(int x, int y) {
     this->obstacles[y * this->width + x] = true;
-}
-
-
-void GridEnvironment::UnsetObstacle(const Waypoint2D& waypoint) {
-    this->obstacles[this->WaypointToLinear(waypoint)] = false;
 }
 
 
@@ -82,6 +72,6 @@ void GridEnvironment::UnsetObstacle(int x, int y) {
 }
 
 
-bool GridEnvironment::GetObstacle(int x, int y) const {
+bool GridEnvironment::IsObstacle(int x, int y) const {
     return this->obstacles[y * this->width + x];
 }

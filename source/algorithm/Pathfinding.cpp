@@ -77,6 +77,7 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
     }
 
     printf("num nodes %i\n", numNodesExplored);
+    
     // Recover the path
     std::vector<Waypoint2D> path;
     

@@ -17,8 +17,8 @@ public:
     GridHeap(int maxNumberOfItems);
     bool Push(int id, float value);
     int Pop();
-
     int Size() const;
+    void Clear();
 
 private:
     std::vector<GridHeapItem> heapItems;

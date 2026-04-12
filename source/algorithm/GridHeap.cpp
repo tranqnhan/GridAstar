@@ -1,4 +1,5 @@
 #include "GridHeap.hpp"
+#include <algorithm>
 
 
 GridHeap::GridHeap(int maxNumberOfItems) : maxNumberOfItems(maxNumberOfItems) {
@@ -44,6 +45,12 @@ int GridHeap::Pop() {
 
 int GridHeap::Size() const {
     return this->heapItems.size();
+}
+
+
+void GridHeap::Clear() {
+    std::fill(this->heapIdMap.begin(), this->heapIdMap.end(), this->maxNumberOfItems);
+    this->heapItems.clear();
 }
 
 

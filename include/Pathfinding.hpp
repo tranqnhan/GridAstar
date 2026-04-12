@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Waypoint2D.hpp"
+
 #include "GridEnvironment.hpp"
 
 class Pathfinding {

@@ -25,7 +25,7 @@ void GridUI::Input() {
 
         if (gridX < this->widthAsCells && gridY < this->heightAsCells && gridX >= 0 && gridY >= 0) {
 
-            if (this->environment.GetObstacle(gridX, gridY)) {
+            if (this->environment.IsObstacle(gridX, gridY)) {
                 this->environment.UnsetObstacle(gridX, gridY);
                 ((Color *)this->gridImage.data)[gridY * this->widthAsCells + gridX] = WHITE;
             } else {
@@ -41,8 +41,11 @@ void GridUI::Input() {
         const int gridX = GetMouseX() / this->cellSize;
         const int gridY = GetMouseY() / this->cellSize;
 
-        if (gridX < this->widthAsCells && gridY < this->heightAsCells && gridX >= 0 && gridY >= 0) {
+        if (gridX < this->widthAsCells && gridY < this->heightAsCells && gridX >= 0 && gridY >= 0 && !this->environment.IsObstacle(gridX, gridY)) {
+            ((Color *)this->gridImage.data)[this->start.y * this->widthAsCells + this->start.x] = WHITE;
+            ((Color *)this->gridImage.data)[gridY * this->widthAsCells + gridX] = GREEN;
             this->start = Waypoint2D(gridX, gridY);        
+            this->imageChanged = true;
         }
     }
 
@@ -50,8 +53,11 @@ void GridUI::Input() {
         const int gridX = GetMouseX() / this->cellSize;
         const int gridY = GetMouseY() / this->cellSize;
 
-        if (gridX < this->widthAsCells && gridY < this->heightAsCells && gridX >= 0 && gridY >= 0) {
+        if (gridX < this->widthAsCells && gridY < this->heightAsCells && gridX >= 0 && gridY >= 0 && !this->environment.IsObstacle(gridX, gridY)) {
+            ((Color *)this->gridImage.data)[this->end.y * this->widthAsCells + this->end.x] = WHITE;
+            ((Color *)this->gridImage.data)[gridY * this->widthAsCells + gridX] = RED;
             this->end = Waypoint2D(gridX, gridY);        
+            this->imageChanged = true;
         }
     }
 

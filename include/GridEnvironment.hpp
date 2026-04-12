@@ -15,11 +15,9 @@ public:
     Waypoint2D LinearToWaypoint(int linearCoordinate) const;
     const std::vector<int> GetNextLinear(int centerLinearCoordinate) const;
 
-    void SetObstacle(const Waypoint2D& waypoint);
     void SetObstacle(int x, int y);
-    void UnsetObstacle(const Waypoint2D& waypoint);
     void UnsetObstacle(int x, int y);
-    bool GetObstacle(int x, int y) const;
+    bool IsObstacle(int x, int y) const;
 
 private:
     int width;
