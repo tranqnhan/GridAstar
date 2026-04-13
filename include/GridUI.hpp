@@ -1,12 +1,21 @@
 #pragma once
 
+#include "raylib.h"
+
+#include <string>
 #include <vector>
 
-#include "raylib.h"
+#include "Agent.hpp"
 
 #include "Waypoint2D.hpp"
 #include "GridEnvironment.hpp"
 #include "Pathfinding.hpp"
+
+enum GridModifyState {
+    AgentState,
+    GridState,
+    NumberOfStates
+};
 
 class GridUI {
 public:
@@ -33,4 +42,12 @@ private:
     Pathfinding pathfinding;
 
     std::vector<Waypoint2D> path;
+    std::vector<Agent> agents;
+    int selectedAgent;
+
+    GridModifyState state;
+    std::string stateNames[GridModifyState::NumberOfStates];
+
+    void GridStateInput();
+    void AgentStateInput();
 };

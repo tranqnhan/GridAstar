@@ -1,22 +1,17 @@
-#include <cstdio>
+#include <ctime>
 #include <memory>
 
+#include "XorshiftRandom.hpp"
 #include "raylib.h"
 
-#include "GridHeap.hpp"
+#include "Program.hpp"
+
 #include "GridUI.hpp"
 
-#define WINDOW_W 1000
-#define WINDOW_H 800
-#define WINDOW_N "Grid A*"
 
-#define CELL_SIZE 20
-#define WIDTH_AS_CELLS 50
-#define HEIGHT_AS_CELLS 40
-
+uint32_t XorshiftRandom::randomState = std::time(0);
 
 std::unique_ptr<GridUI> gridUI;
-
 
 // Main loop initialization
 void Init() {

@@ -1,13 +1,17 @@
-#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
 
 #include "GridHeap.hpp"
 #include "Waypoint2D.hpp"
 #include "Pathfinding.hpp"
 
 std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environment, const Waypoint2D& start, const Waypoint2D& end) {
+    if (environment.IsObstacle(end.x, end.y)) {
+        return std::vector<Waypoint2D>();
+    }
+
     this->frontier.Set(environment.GetSize());
 
     std::vector<int> parentLinearCoordinates(environment.GetSize(), -1);
@@ -36,23 +40,23 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
         numNodesExplored++;
 
         for (const int nextLinearCoordinate : environment.GetNextLinear(currentLinearCoordinate)) {
-            if (!explored[nextLinearCoordinate]) {
-                const Waypoint2D& nextWaypoint = environment.LinearToWaypoint(nextLinearCoordinate);
-                
-                const int diff = std::abs(currentLinearCoordinate - nextLinearCoordinate);
-                const float dCost = (diff == 1 || diff == environment.GetWidth()) ? 1.0f : 1.4142f;
-                const float currentCost = cost[currentLinearCoordinate] + dCost;
+            if (explored[nextLinearCoordinate]) continue;
 
-                const int dxEnd = std::abs(nextWaypoint.x - end.x);
-                const int dyEnd = std::abs(nextWaypoint.y - end.y);
-                const float estimateCost = (dxEnd < dyEnd) ? (1.4142f * dxEnd + dyEnd) : (1.4142f * dyEnd + dxEnd);
-                
-                const float totalCost = currentCost + estimateCost;
+            const Waypoint2D& nextWaypoint = environment.LinearToWaypoint(nextLinearCoordinate);
+            
+            const int diff = std::abs(currentLinearCoordinate - nextLinearCoordinate);
+            const float dCost = (diff == 1 || diff == environment.GetWidth()) ? 1.0f : 1.4142f;
+            const float currentCost = cost[currentLinearCoordinate] + dCost;
 
-                if (frontier.Push(nextLinearCoordinate, totalCost)) {
-                    parentLinearCoordinates[nextLinearCoordinate] = currentLinearCoordinate;
-                    cost[nextLinearCoordinate] = currentCost;
-                }
+            const int dxEnd = std::abs(nextWaypoint.x - end.x);
+            const int dyEnd = std::abs(nextWaypoint.y - end.y);
+            const float estimateCost = (dxEnd < dyEnd) ? (1.4142f * dxEnd + dyEnd) : (1.4142f * dyEnd + dxEnd);
+            
+            const float totalCost = currentCost + estimateCost;
+
+            if (frontier.Push(nextLinearCoordinate, totalCost)) {
+                parentLinearCoordinates[nextLinearCoordinate] = currentLinearCoordinate;
+                cost[nextLinearCoordinate] = currentCost;
             }
         }
     }
@@ -70,7 +74,7 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
             currentLinearCoordinate = parentLinearCoordinates[currentLinearCoordinate];
         }
 
-        std::reverse(path.begin(), path.end());
+       // std::reverse(path.begin(), path.end());
     }
 
     return path;

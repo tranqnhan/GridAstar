@@ -39,6 +39,7 @@ target_sources(GRIDASTAR PRIVATE
     source/algorithm/GridHeap.cpp
     source/algorithm/GridEnvironment.cpp
     source/algorithm/Pathfinding.cpp
+    source/agent/Agent.cpp
     source/ui/GridUI.cpp
     source/Main.cpp
 )
