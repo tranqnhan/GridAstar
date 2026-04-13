@@ -40,9 +40,7 @@ void Agent::Update() {
                 .x = (float)nextWaypoint.x * CELL_SIZE + (float)(CELL_SIZE / 2.0), 
                 .y = (float)nextWaypoint.y * CELL_SIZE + (float)(CELL_SIZE / 2.0)};
         }
-    }
-
-    if (nextPosition.x != position.x || nextPosition.y != position.y) {
+    } else {
         const float dx = nextPosition.x - position.x;
         const float dy = nextPosition.y - position.y;
         const float deltaSecond = GetFrameTime();
