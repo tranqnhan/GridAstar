@@ -7,7 +7,7 @@
 
 class Agent {
 public:
-    Agent(float x = 0, float y = 0);
+    Agent(float x = 0, float y = 0, int id = 0);
     void Input();
     void Update();
     void Render();
@@ -22,7 +22,9 @@ private:
     Vector2 position;
     Color color;
     float speed; // Per Second
+    int id;
 
     std::vector<Waypoint2D> pathRequested;
     Vector2 nextPosition;
+    bool nextWaypoint;
 };
