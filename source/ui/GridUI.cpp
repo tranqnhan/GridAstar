@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <sys/types.h>
 
 #include "GridUI.hpp"
 #include "GridEnvironment.hpp"
@@ -122,11 +123,6 @@ void GridUI::AgentStateInput() {
 }
 
 void GridUI::Update() {
-    if (this->imageChanged) {
-        UpdateTexture(this->gridTexture, this->gridImage.data);
-        this->imageChanged = false;
-    }
-
     if (this->findPath) {
         if (this->selectedAgent != -1) {
             // Someone is gonna hate this
@@ -134,12 +130,22 @@ void GridUI::Update() {
             this->agents[this->selectedAgent].FindPathToGoal(pathfinding, environment, endpos);
         }
         this->selectedAgent = -1;
+        
+        Color *gridImageColor = (Color *)this->gridImage.data;
+        this->imageChanged = true;
         this->findPath = false;
     }
 
     for (Agent& agent : agents) {
         agent.Update(environment);
     }
+
+
+    if (this->imageChanged) {
+        UpdateTexture(this->gridTexture, this->gridImage.data);
+        this->imageChanged = false;
+    }
+
 }
 
 

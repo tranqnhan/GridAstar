@@ -15,9 +15,9 @@ Agent::Agent(float x, float y, int id) {
     nextPosition = position;
 
     speed = 100;
-    color.r = XorshiftRandom::RandomInteger(100, 255);
-    color.g = XorshiftRandom::RandomInteger(100, 255);
-    color.b = XorshiftRandom::RandomInteger(100, 255);
+    color.r = XorshiftRandom::RandomInteger(100, 200);
+    color.g = XorshiftRandom::RandomInteger(100, 200);
+    color.b = XorshiftRandom::RandomInteger(100, 200);
     color.a = 255;
 
     this->id = id;
@@ -76,7 +76,7 @@ void Agent::FollowPath(GridEnvironment& environment) {
             } else { // Lost frame speed
                 this->currentWaypointCompleted = true;
                 
-                path.FinishCurrentWaypoint(environment, AGENT_PATH_COST);
+                path.FinishCurrentWaypoint(environment);
                 //position.x = nextPosition.x;
                 //position.y = nextPosition.y;
             }
@@ -89,8 +89,6 @@ void Agent::FollowPath(GridEnvironment& environment) {
 void Agent::Render() {
     DrawCircle(this->position.x, this->position.y, CELL_SIZE / 2.0, this->color);
     
-    DrawCircle(this->position.x, this->position.y, CELL_SIZE / 2.0, this->color);
-
     if (!path.IsPathCompleted()) {
         const Waypoint2D& goalWaypoint = path.GetGoal();
         const float goalX = goalWaypoint.x * CELL_SIZE;

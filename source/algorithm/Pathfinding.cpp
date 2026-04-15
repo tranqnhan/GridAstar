@@ -9,7 +9,7 @@
 #include "Pathfinding.hpp"
 
 void Pathfinding::AstarSearch(GridEnvironment& environment, Path& path, const Waypoint2D& start, const Waypoint2D& end, int agentCost) {
-    path.Clear();
+    path.Clear(environment);
 
     if (environment.IsObstacle(end.x, end.y)) {
         return;
