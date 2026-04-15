@@ -2,6 +2,7 @@
 
 GridEnvironment::GridEnvironment(int width, int height) : width(width), height(height) {
     obstacles.resize(width * height, false);
+    costs.resize(width * height, 0);
 }
 
 
@@ -74,4 +75,23 @@ void GridEnvironment::UnsetObstacle(int x, int y) {
 
 bool GridEnvironment::IsObstacle(int x, int y) const {
     return this->obstacles[y * this->width + x];
+}
+
+
+void GridEnvironment::IncreaseCost(int x, int y, int cost) {
+    this->costs[y * width + x] += cost;
+}
+
+
+void GridEnvironment::DecreaseCost(int x, int y, int cost) {
+    const int linearIndex = y * width + x;
+    this->costs[linearIndex] -= cost;
+    if (this->costs[linearIndex] < 0) {
+        this->costs[linearIndex] = 0;
+    }
+
+}
+
+int GridEnvironment::GetCost(int linearIndex) const {
+    return this->costs[linearIndex];
 }

@@ -9,10 +9,10 @@ class Agent {
 public:
     Agent(float x = 0, float y = 0, int id = 0);
     void Input();
-    void Update();
+    void Update(GridEnvironment& environment);
     void Render();
 
-    void FindPathToGoal(Pathfinding& pathfinding, const GridEnvironment& environment, Vector2 goal);
+    void FindPathToGoal(Pathfinding& pathfinding, GridEnvironment& environment, Vector2 goal);
 
     const Vector2& GetPosition() const {
         return position;
@@ -24,7 +24,11 @@ private:
     float speed; // Per Second
     int id;
 
-    std::vector<Waypoint2D> pathRequested;
+    Path path;
+    bool currentWaypointCompleted;
     Vector2 nextPosition;
-    bool nextWaypoint;
+    bool followPath;
+
+
+    void FollowPath(GridEnvironment& environment);
 };

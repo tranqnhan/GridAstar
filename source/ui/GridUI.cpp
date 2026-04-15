@@ -115,6 +115,10 @@ void GridUI::AgentStateInput() {
                 agents.emplace_back(gridX * CELL_SIZE + (CELL_SIZE / 2.0), gridY * CELL_SIZE + (CELL_SIZE / 2.0));
         }
     }
+
+    for (Agent& agent : agents) {
+        agent.Input();
+    }
 }
 
 void GridUI::Update() {
@@ -134,7 +138,7 @@ void GridUI::Update() {
     }
 
     for (Agent& agent : agents) {
-        agent.Update();
+        agent.Update(environment);
     }
 }
 

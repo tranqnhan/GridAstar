@@ -2,12 +2,12 @@
 
 #include "GridHeap.hpp"
 #include "Waypoint2D.hpp"
-
+#include "Path.hpp"
 #include "GridEnvironment.hpp"
 
 class Pathfinding {
 public:
-    std::vector<Waypoint2D> AstarSearch(const GridEnvironment& environment, const Waypoint2D& start, const Waypoint2D& end);
+    void AstarSearch(GridEnvironment& environment, Path& path, const Waypoint2D& start, const Waypoint2D& end, int agentCost);
 
 private:
     GridHeap frontier;

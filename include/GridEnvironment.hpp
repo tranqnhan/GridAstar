@@ -18,12 +18,16 @@ public:
     void SetObstacle(int x, int y);
     void UnsetObstacle(int x, int y);
     bool IsObstacle(int x, int y) const;
+    
+    void IncreaseCost(int x, int y, int cost);
+    void DecreaseCost(int x, int y, int cost);
+    int GetCost(int linearIndex) const;
 
 private:
     int width;
     int height;
 
     std::vector<bool> obstacles;
-
+    std::vector<int> costs;
 };
 

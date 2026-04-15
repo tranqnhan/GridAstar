@@ -5,11 +5,14 @@
 
 #include "GridHeap.hpp"
 #include "Waypoint2D.hpp"
+#include "Path.hpp"
 #include "Pathfinding.hpp"
 
-std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environment, const Waypoint2D& start, const Waypoint2D& end) {
+void Pathfinding::AstarSearch(GridEnvironment& environment, Path& path, const Waypoint2D& start, const Waypoint2D& end, int agentCost) {
+    path.Clear();
+
     if (environment.IsObstacle(end.x, end.y)) {
-        return std::vector<Waypoint2D>();
+        return;
     }
 
     this->frontier.Set(environment.GetSize());
@@ -44,13 +47,16 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
 
             const Waypoint2D& nextWaypoint = environment.LinearToWaypoint(nextLinearCoordinate);
             
+            constexpr float diagonalCost = 1.4142f;
+            constexpr float straightCost = 1.0f;
+
             const int diff = std::abs(currentLinearCoordinate - nextLinearCoordinate);
-            const float dCost = (diff == 1 || diff == environment.GetWidth()) ? 1.0f : 1.4142f;
-            const float currentCost = cost[currentLinearCoordinate] + dCost;
+            const float dCost = (diff == 1 || diff == environment.GetWidth()) ? straightCost : diagonalCost;
+            const float currentCost = cost[currentLinearCoordinate] + dCost + environment.GetCost(nextLinearCoordinate);
 
             const int dxEnd = std::abs(nextWaypoint.x - end.x);
             const int dyEnd = std::abs(nextWaypoint.y - end.y);
-            const float estimateCost = (dxEnd < dyEnd) ? (1.4142f * dxEnd + dyEnd) : (1.4142f * dyEnd + dxEnd);
+            const float estimateCost = (dxEnd < dyEnd) ? (diagonalCost * dxEnd + dyEnd) : (diagonalCost * dyEnd + dxEnd);
             
             const float totalCost = currentCost + estimateCost;
 
@@ -64,18 +70,13 @@ std::vector<Waypoint2D> Pathfinding::AstarSearch(const GridEnvironment& environm
     printf("num nodes %i\n", numNodesExplored);
     
     // Recover the path
-    std::vector<Waypoint2D> path;
     
     if (pathFound) {
         int currentLinearCoordinate = endLinearCoordinate;
 
         while (currentLinearCoordinate != -1) {
-            path.emplace_back(environment.LinearToWaypoint(currentLinearCoordinate));
+            path.AddWaypoint(environment, std::move(environment.LinearToWaypoint(currentLinearCoordinate)), agentCost);
             currentLinearCoordinate = parentLinearCoordinates[currentLinearCoordinate];
         }
-
-       // std::reverse(path.begin(), path.end());
     }
-
-    return path;
 }
